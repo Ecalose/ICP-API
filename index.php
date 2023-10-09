@@ -8,11 +8,12 @@ if ($_GET['domain']) {
 } else {
     exit("缺少参数");
 }
+$serviceType = 1;//查询类型
 $timeStamp = time();
 $authKey = md5("testtest" . $timeStamp);
 $token = json_decode(curl_post("auth", "authKey=$authKey&timeStamp=$timeStamp", "application/x-www-form-urlencoded;charset=UTF-8", "0"));
 $token = $token->params->bussiness;
-$query = json_decode(curl_post("icpAbbreviateInfo/queryByCondition", '{"pageNum":"","pageSize":"","unitName":"' . $domain . '"}', "application/json;charset=UTF-8", $token));
+$query = json_decode(curl_post("icpAbbreviateInfo/queryByCondition", '{"pageNum":"","pageSize":"","serviceType":"'. $serviceType .'","unitName":"' . $domain . '"}', "application/json;charset=UTF-8", $token));
 $query = json_encode($query->params->list);
 $query = str_replace("[", "", $query);
 $query = json_decode(str_replace("]", "", $query));
